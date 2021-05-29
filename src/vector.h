@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 #include <fstream>
+#include <chrono>
+#include <time.h>
 
 using std::cout;
 using std::endl;
@@ -35,9 +37,12 @@ template <class T> class Vector {
     T& operator[](size_type i) {return data[i];}
     const T& operator[](size_type i) const {return data[i];}
 
+    // Funkcijos:
 
     // push_back():
     void push_back(const T& element);
+
+    void pop_back();
 
     void clear();
 
@@ -149,6 +154,8 @@ template <class T> void Vector<T>::unchecked_append(const T& val) {
 	alloc.construct(avail++, val);
 }
 
+// Funkcijos:
+
 template <class T> void Vector<T>::push_back(const T& val) {
 	if (avail == limit) 
 		grow();				   // jei reikia, isskiriama vietos
@@ -156,7 +163,10 @@ template <class T> void Vector<T>::push_back(const T& val) {
 }
 
 template <class T> void Vector<T>::clear(){
-    uncreate();
+    iterator it = avail;
+    while (it != data) alloc.destroy(--it);
+    alloc.deallocate(data, limit - data);
+    data = limit = avail = nullptr;
 }
 
 #endif
