@@ -21,3 +21,5 @@ Spartos analizė užpildant std::vector ir mano sukurtą vektorių 10000, 100000
 | --- | --- | --- | --- | --- | --- |
 | std::vector | 0 | 0.0019971 | 0.0199794 | 0.188328 | 1.81993 |
 | sukurtas vector | 0 | 0.0019983 | 0.0199817 | 0.20515 | 2.04444 |
+
+Atminties perskirstymai, kai size() == capacity() įvyko 28 kartus.
