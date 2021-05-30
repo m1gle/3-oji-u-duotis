@@ -26,6 +26,6 @@ Atminties perskirstymai su 100000000 dydžio failu, kai size() == capacity() įv
 
 Spartos analizė, naudojant duomenų failą su 100000 studentų įrašų:
 | Tipas | Nuskaitymas | Rūšiavimas | Benrai |
-| --- | --- |
+| --- | --- | --- | --- |
 | std::vector | 0.324573 | 0.0983918 | 1.00449 |
 | sukurtas vector | 0.33669 | 0.0731757 | 0.96074 
