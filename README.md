@@ -23,3 +23,9 @@ Spartos analizė užpildant std::vector ir mano sukurtą vektorių 10000, 100000
 | sukurtas vector | 0 | 0.0019983 | 0.0199817 | 0.20515 | 2.04444 |
 
 Atminties perskirstymai su 100000000 dydžio failu, kai size() == capacity() įvyko 28 kartus.
+
+Spartos analizė, naudojant duomenų failą su 100000 studentų įrašų:
+| Tipas | Nuskaitymas | Rūšiavimas | Benrai |
+| --- | --- |
+| std::vector | 0.324573 | 0.0983918 | 1.00449 |
+| sukurtas vector | 0.33669 | 0.0731757 | 0.96074 
