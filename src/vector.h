@@ -7,6 +7,7 @@
 #include <fstream>
 #include <chrono>
 #include <time.h>
+#include <list>
 
 using std::cout;
 using std::endl;
@@ -39,12 +40,34 @@ template <class T> class Vector {
 
     // Funkcijos:
 
-    // push_back():
-    void push_back(const T& element);
+    void push_back(const T& val) {
+        if (avail == limit) 
+		    grow();				   // jei reikia, isskiriama vietos
+	    unchecked_append(val); // ideda nauja elementa
+    }
+    
 
-    void pop_back();
+    void pop_back(){
+        alloc.destroy(--avail);
+    }
 
-    void clear();
+    void clear() {
+        iterator it = avail;
+        while (it != data) alloc.destroy(--it);
+        alloc.deallocate(data, limit - data);
+        data = limit = avail = nullptr;
+    }
+
+    void assign (size_type size, const T& val) {
+    uncreate();
+    create(size, val);
+    }
+
+    void reserve(size_type size){
+    if(size>capacity()){
+     grow(size);
+    }
+    }
 
     // Funkcijos grąžinančios iteratorius:
     size_type size() const {return avail - data;}
@@ -71,6 +94,7 @@ template <class T> class Vector {
 
 	// pagalbines funkcijos push_back realizacijai
 	void grow();
+    void grow(size_type new_capacity);
 	void unchecked_append(const T&);
 };
 
@@ -149,24 +173,22 @@ template <class T> void Vector<T>::grow() {
 	limit = data + new_size;
 }
 
+template <class T> void Vector<T>::grow(size_type new_capacity){
+    size_type new_size = std::max(2 * capacity(), new_capacity);
+    iterator new_data =alloc.allocate(new_size);
+    iterator new_avail = std::uninitialized_copy(data, avail, new_data);
+
+    uncreate();
+
+    data=new_data;
+    avail=new_avail;
+    limit=data+new_size;
+}
+
 // tariame, kad `avail` point'ina i isskirta, bet neinicializuota vieta
 template <class T> void Vector<T>::unchecked_append(const T& val) {
 	alloc.construct(avail++, val);
 }
 
-// Funkcijos:
-
-template <class T> void Vector<T>::push_back(const T& val) {
-	if (avail == limit) 
-		grow();				   // jei reikia, isskiriama vietos
-	unchecked_append(val); // ideda nauja elementa
-}
-
-template <class T> void Vector<T>::clear(){
-    iterator it = avail;
-    while (it != data) alloc.destroy(--it);
-    alloc.deallocate(data, limit - data);
-    data = limit = avail = nullptr;
-}
 
 #endif
